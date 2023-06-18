@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package events;
+
+option java_multiple_files = true;
+
+message UpdateProfileEvent {
+  optional string name = 1;
+  optional int32 color = 2;
+}
+
+message StartEvent {
+  message Players {
+    optional int32 pid = 1;
+    optional string name = 2;
+  }
+
+  message GameProperties {
+    optional int32 startMoney = 1;
+    optional int32 loopMoney = 2;
+  }
+
+  optional int32 pid = 1;
+  repeated Players players = 2;
+  optional GameProperties properties = 3;
+}
+
+message MoveEvent {
+  message Begin {
+    optional int32 pid = 1;
+    optional bool turn = 2;
+  }
+
+  message Action {
+    optional int32 pid = 1;
+    optional int32 type = 2;
+  }
+
+  message End { optional int32 pid = 1; }
+}

@@ -5,7 +5,7 @@ package server.game;
  */
 public abstract class Game implements GameInfo {
 
-    Lobby lobby;
+    protected Lobby lobby;
 
     protected Game(Lobby lobby) {
         this.lobby = lobby;
