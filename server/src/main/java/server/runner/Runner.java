@@ -31,6 +31,8 @@ public class Runner {
 
     private ServerSocketChannel socket;
 
+    private EventHandler eventHandler;
+
     public Runner(RunnerConfig config) throws IOException {
         Integer requiredLobbySize = Monopoly.getRequiredLobbySize();
         this.lobby = new Lobby(requiredLobbySize);
@@ -42,6 +44,8 @@ public class Runner {
         selector = Selector.open();
         socket.configureBlocking(false);
         socket.register(selector, SelectionKey.OP_ACCEPT);
+
+        eventHandler = new EventHandler(game, lobby, socket);
 
         logger.trace("Setup finished");
     }
@@ -63,7 +67,12 @@ public class Runner {
 
                     if (key.isAcceptable()) {
                         logger.trace("New player connecting...");
-                        handleNewPlayer();
+                        eventHandler.handleNewPlayer();
+                    }
+
+                    if (key.isReadable()) {
+                        logger.trace("New message from player...");
+                        eventHandler.handleNewPlayerEvent();
                     }
 
                     iter.remove();
@@ -78,34 +87,6 @@ public class Runner {
                     logger.error("Cannot recover from the error. Exiting...");
                     return;
                 }
-            }
-        }
-    }
-
-    private void handleNewPlayer() {
-        SocketChannel client;
-        try {
-            client = socket.accept();
-        } catch (IOException e) {
-            logger.warn("Cannot accept new player: {}", e);
-            return;
-        }
-
-        Player player = new Player(client);
-
-        Boolean isAdded = lobby.addPlayer(player);
-        if (isAdded) {
-            try {
-                logger.info("New player connected: {}", client.getRemoteAddress().toString());
-            } catch (IOException e) {
-                logger.debug("Cannot get client's remote address: {}", e);
-                logger.info("New player connected");
-            }
-        } else {
-            try {
-                client.close();
-            } catch (IOException e) {
-                logger.debug("Cannot close client's socket: {}", e);
             }
         }
     }

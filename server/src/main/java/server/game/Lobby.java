@@ -28,4 +28,12 @@ public class Lobby {
 
     }
 
+    public Integer getRequiredPlayerCount() {
+        return size;
+    }
+
+    public Integer getPlayerCount() {
+        return players.size();
+    }
+
 }
