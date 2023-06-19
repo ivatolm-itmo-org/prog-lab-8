@@ -101,8 +101,9 @@ public class GUI extends Application {
             for (int x = 0; x < MONOPOLY_FIELD_SIZE; x++) {
                 boolean xCond = x == 0 || x == MONOPOLY_FIELD_SIZE - 1;
                 boolean yCond = y == 0 || y == MONOPOLY_FIELD_SIZE - 1;
+                boolean eCond = (x == 3 && y == 3) || (x == 7 && y == 7);
 
-                if (!xCond && !yCond)
+                if (!xCond && !yCond && !eCond)
                     continue;
 
                 String fmt = index.toString();
