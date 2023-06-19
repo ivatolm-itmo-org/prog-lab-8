@@ -1,0 +1,11 @@
+.gridpane {
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-width: 0 5 0 0;
+}
+
+.card {
+    -fx-background-color: rgb(240, 240, 240);
+    -fx-border-color: black;
+    -fx-border-width: 0.2;
+}
